@@ -1,30 +1,42 @@
 import { useState } from 'react';
 import './App.css';
 
-const App = () => {
-  const [time, setTime] = useState({ hours: '', minutes: '', seconds: '' });
-  const [percentage, setPercentage] = useState('');
-  const [distance, setDistance] = useState('');
-  const [lap, setLap] = useState(null);
-  const [result, setResult] = useState(null);
+type Time = {
+  hours: string;
+  minutes: string;
+  seconds: string;
+};
 
-  const handleChange = (e) => {
+type Result = {
+  adjusted: { minutes: number; seconds: number };
+  lap: { minutes: number; seconds: number } | null;
+} | null;
+
+const App = () => {
+  const [time, setTime] = useState<Time>({ hours: '', minutes: '', seconds: '' });
+  const [percentage, setPercentage] = useState<string>('');
+  const [distance, setDistance] = useState<string>('');
+  const [lap, setLap] = useState<number | null>(null);
+  const [result, setResult] = useState<Result>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setTime((prev) => ({ ...prev, [name]: value }));
   };
 
   const calculatePace = () => {
-    // Время в секундах
-    const totalSeconds = (parseInt(time.hours || 0) * 3600) + (parseInt(time.minutes || 0) * 60) + parseInt(time.seconds || 0);
-    const adjustedSeconds = totalSeconds / (percentage / 100);
+    const totalSeconds =
+      parseInt(time.hours || '0') * 3600 +
+      parseInt(time.minutes || '0') * 60 +
+      parseInt(time.seconds || '0');
+    const adjustedSeconds = totalSeconds / (parseFloat(percentage) / 100);
 
     const adjustedMinutes = Math.floor(adjustedSeconds / 60);
     const adjustedRemainderSeconds = Math.round(adjustedSeconds % 60);
 
     let lapResult = null;
     if (lap) {
-  
-      const laps = distance / lap;
+      const laps = parseFloat(distance) / lap;
       const lapPaceSeconds = adjustedSeconds / laps;
       const lapMinutes = Math.floor(lapPaceSeconds / 60);
       const lapSeconds = Math.round(lapPaceSeconds % 60);
@@ -107,7 +119,7 @@ const App = () => {
       <div className="input-group">
         <label>
           Выбор длины круга (м):
-          <select value={lap || ''} onChange={(e) => setLap(e.target.value ? +e.target.value : null)}>
+          <select value={lap || ''} onChange={(e) => setLap(e.target.value ? parseInt(e.target.value) : null)}>
             <option value="">Без круга</option>
             <option value="200">200 м</option>
             <option value="400">400 м</option>
