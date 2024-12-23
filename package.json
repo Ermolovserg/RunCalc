@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://ermolovserg.github.io/my-react-app",
+  "homepage": "https://ermolovserg.github.io/RunCalc",
   "scripts": {
   "dev": "vite",
   "build": "tsc -b && vite build",
