@@ -14,7 +14,7 @@ type Result = {
 
 const App = () => {
   const [time, setTime] = useState<Time>({ hours: '', minutes: '', seconds: '' });
-  const [percentage, setPercentage] = useState<string>(''); // Можно оставить пустым
+  const [percentage, setPercentage] = useState<string>('');
   const [distance, setDistance] = useState<string>('');
   const [lap, setLap] = useState<number | null>(null);
   const [result, setResult] = useState<Result>(null);
@@ -29,8 +29,6 @@ const App = () => {
       parseInt(time.hours || '0') * 3600 +
       parseInt(time.minutes || '0') * 60 +
       parseInt(time.seconds || '0');
-
-    // Если процент не введен, принимаем его равным 100
     const validPercentage = parseFloat(percentage) || 100;
     const adjustedSeconds = totalSeconds / (validPercentage / 100);
 
